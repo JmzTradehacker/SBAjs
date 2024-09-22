@@ -77,9 +77,64 @@ const CourseInfo = {
   ];
   
   function getLearnerData(course, ag, submissions) {
-    // Function implementation will go here.
+
+  const learnerResults = [];
+  const assignments = ag.assignments;
+  const learnerSub = {};
+  const aMap = {};
+  //Procces Submissions
+
+  assignments.forEach((assignment) => {
+    aMap[assignment.id] = assignment;
+  });
+
+  submissions.forEach((submission) => {
+    const learnerId = submission.learner_id;
+    if (!learnerSub[learnerId]) {
+      learnerSub[learnerId] = [];
+    }
+    learnerSub[learnerId].push(submission);
+  });
+  
+  for (const learnerId in learnerSub) {
+    const learnerSubmissions = learnerSub[learnerId];
+    const learnerResult = {
+      id: parseInt(learnerId),
+      avg: 0
+    };
+
+    let totalScore = 0;
+    let totalPossiblePoints = 0;
+
+    learnerSubmissions.forEach((submission) => {
+      const assignmentId = submission.assignment_id;
+      const assignment = aMap[assignmentId];
+      const pointsPossible = assignment.points_possible;
+
+      let score = submission.submission.score;
+
+      // To be implemented: Handle late penalties
+
+      // Calculate individual assignment score as a proportion
+      const proportion = parseFloat((score / pointsPossible).toFixed(3));
+
+      // Add the proportion to learnerResult with assignmentId as key
+      learnerResult[assignmentId] = proportion;
+
+      // Update totalScore and totalPossiblePoints
+      totalScore += score;
+      totalPossiblePoints += pointsPossible;
+    });
+
+    // Calculate average score
+    learnerResult.avg = parseFloat((totalScore / totalPossiblePoints).toFixed(3));
+
+    learnerResults.push(learnerResult);
+  }
+
+  return learnerResults;
+  
   }
   
   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-  
   console.log(result);
