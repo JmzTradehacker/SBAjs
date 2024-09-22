@@ -208,5 +208,10 @@ function getPenaltyPerDay(daysLate) {
     return learnerResults;
   }
   
-  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-  console.log(result);
+// Error handling with try/catch
+try {
+    const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error("An error occurred while processing learner data:", error.message);
+  }
