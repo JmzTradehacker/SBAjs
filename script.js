@@ -114,15 +114,6 @@ function getPenaltyPerDay(daysLate) {
     const learnerResults = [];
     let assignments = ag.assignments;
     
-    // Remove the last assignment and add a new one
-    assignments.pop();
-    assignments.push({
-        id: 4,
-        name: "Advanced JavaScript",
-        due_at: "2023-04-30",
-        points_possible: 200
-    });
-  
     // Create a map of assignments for quick access
     const aMap = {};
     assignments.forEach((assignment) => {
@@ -207,7 +198,8 @@ function getPenaltyPerDay(daysLate) {
   
     return learnerResults;
   }
-  
+  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+  console.log(result)
 // Error handling with try/catch
 try {
     const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
